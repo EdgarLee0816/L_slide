@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>왼쪽방향을 향하여 자동 슬라이드</title>
+
+    <style>
+        *{margin:0; padding:0; box-sizing: border-box;}
+        #layout {max-width:270px; margin:auto; border:5px solid red; overflow: hidden;}
+        #slide {display:flex; width:calc(400%); position:relative; left:0;}
+        /* position:relative; 가 움직이는 역할을 함. */
+        #slide img {display:block; border:1px solid blue; background-color: aquamarine; /*width:100%;*/ font-size:10rem; text-align: center; /* max-width:100%*/}
+
+         @media (max-width:240px)
+        {
+            #layout {max-width:100%;}
+            #slide img {width:calc(100%*0.5);}
+        } 
+
+    </style>
+</head>
+<body>
+    <div id = layout>
+        <section id="slideArea">
+            <h1>슬라이드 연습</h1>    
+                <div id="slide"> <!-- 여러가지 img위에 부모 div가 있어야함 -->
+                    <div><img src="image/a.jpg" alt="봄"></div>
+                    <div><img src="image/b.jpg" alt="여름"></div>
+                    <div><img src="image/c.jpg" alt="가을"></div>
+                    <div><img src="image/d.jpg" alt="겨울"></div>                
+                </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            //setTimeout( () =>{ alert('하이');}, 1200);
+            /* setTimeout(함수, 지체시간); 지체시간 이후에 함수가 실행 된다. */
+
+            //setInterval(() => {alert('하이');}, interval);
+            /* setInterval 은 로그인 해서 나갈때까지 계속 반복 된다 */
+
+            
+            const area = document.getElementById("slideArea"); /* 터치하는 곳 */
+            
+            const s1 = document.getElementById('slide');
+
+            let x1;
+            let x2;
+            let pos;
+            let sliding = false; // 슬라이드 이동을 추적하는 변수로 사용하겠다. (현재는 slide 꺼짐.)
+
+            //alert ('s1');
+            /* const iw = window.innerWidth; //브라우저 넓이
+            const img = Array.from (document.getElementsByTagName('img'));
+
+            img.forEach( i => {
+                i.style.width= iw +'px';
+            }); */
+
+            const toLeft = () => {
+              //형식은 " 지정요소.스타일.css속성명(transition) = '값'; " 의 형식으로 쓰인다.
+              sliding = true; // 슬라이드를 켬.
+              s1.style.transition = 'left 1.5s';
+              s1.style.left = '-100%';
+
+              setTimeout( ()=> x(), 1500 );
+            
+              const x = () => {
+                s1.style.left = 0;
+                s1.style.transition = 'none';
+                s1.append(s1.firstElementChild);
+                sliding = false; // 슬라이드 이동 종료
+              }
+            }
+
+            area.addEventListener("touchstart", e=>{
+                //슬라이드가 꺼져 있다면 아래 구문이 실행됨. (터치를 계산함.)
+                if(!sliding) {
+                    x1 = e.touches[0].clientX;
+                
+ 
+
+                area.addEventListener("touchend", zz = e=>{
+                    x2 = e.changedTouches[0].clientX; // 슬라이드 하나 이동 중에는 터치를 잠깐 끈다.
+                    
+
+                    if (x1 > x2){
+                        toLeft();
+                    }
+                
+                });
+            }
+            });
+            //setInterval (toLeft , 2000);
+            //실행문 { toLeft();} 가 1개면 중괄호 새미콜론을 쓰지 않아도 된다.
+
+            x = () => {alert ('하이');}
+          //x(함수) = ()(매개변수) { 내용 }
+
+        });
+    </script>
+</body>
+</html>
