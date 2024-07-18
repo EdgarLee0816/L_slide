@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>왼쪽방향을 향하여 자동 슬라이드</title>
+    <title>왼쪽방향을 향하여 슬라이드</title>
 
     <style>
         *{margin:0; padding:0; box-sizing: border-box;}
@@ -44,12 +44,13 @@
             
             const area = document.getElementById("slideArea"); /* 터치하는 곳 */
             
-            const s1 = document.getElementById('slide');
+            const s1 = document.getElementById('slide'); //슬라이드 할 이미지.
 
             let x1;
             let x2;
             let pos;
-            let sliding = false; // 슬라이드 이동을 추적하는 변수로 사용하겠다. (현재는 slide 꺼짐.)
+            let i = "라인"; // 슬라이드 이동을 추적하는 변수로 사용하겠다. (현재는 slide 꺼짐.)
+            let zz;
 
             //alert ('s1');
             /* const iw = window.innerWidth; //브라우저 넓이
@@ -60,43 +61,47 @@
             }); */
 
             const toLeft = () => {
-              //형식은 " 지정요소.스타일.css속성명(transition) = '값'; " 의 형식으로 쓰인다.
-              sliding = true; // 슬라이드를 켬.
+              i = "컴퓨터"; // 슬라이드를 켬.
+
+              //형식은 " 지정요소.스타일(js속성).css속성명(transition) = '값'; " 의 형식으로 쓰인다.              
               s1.style.transition = 'left 1.5s';
               s1.style.left = '-100%';
+              
 
-              setTimeout( ()=> x(), 1500 );
+              setTimeout( ()=> x(), 1500 ); // 지나간 화면을 끝으로 옮기는 콜백 함수
             
               const x = () => {
-                s1.style.left = 0;
+                s1.style.left = '0%';
                 s1.style.transition = 'none';
                 s1.append(s1.firstElementChild);
-                sliding = false; // 슬라이드 이동 종료
+                i = "라인"; // 슬라이드 이동 종료
               }
             }
 
-            area.addEventListener("touchstart", e=>{
+            area.addEventListener("touchstart", e => {
                 //슬라이드가 꺼져 있다면 아래 구문이 실행됨. (터치를 계산함.)
-                if(!sliding) {
+                if(i == "라인") {
                     x1 = e.touches[0].clientX;
                 
  
 
-                area.addEventListener("touchend", zz = e=>{
+                area.addEventListener("touchend", zz = e => {
+
                     x2 = e.changedTouches[0].clientX; // 슬라이드 하나 이동 중에는 터치를 잠깐 끈다.
                     
 
                     if (x1 > x2){
-                        toLeft();
-                    }
+                        toLeft();}
+                    
+                        area.removeEventListener("touchend", zz);// 이벤트 리스너 제거
                 
-                });
-            }
+                        });
+                    }
             });
             //setInterval (toLeft , 2000);
             //실행문 { toLeft();} 가 1개면 중괄호 새미콜론을 쓰지 않아도 된다.
 
-            x = () => {alert ('하이');}
+            //x = () => {alert ('하이');}
           //x(함수) = ()(매개변수) { 내용 }
 
         });
